@@ -45,7 +45,7 @@ jobs:
         if: steps.autotagger.outputs.tagcreated == 'yes'
         uses: author/action-publish@stable
         with:
-          scan: ./dist
+          scan: ./.dist
         env:
           REGISTRY_TOKEN: "${{ secrets.NPM_TOKEN }}"
 
