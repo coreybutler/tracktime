@@ -8,7 +8,7 @@ This cross-runtime JavaScript module acts like a stopwatch, allowing developers 
 This example is uses the ES Module imports, presented as it would be used in Node.js (12.x.x with `--experimental-modules` flag or Node 14.x.x and beyond). For use in other runtimes, see the [installation](#installation) section.
 
 ```javascript
-import TrackTime from 'tracktime'
+import TrackTime from 'node-tracktime'
 
 stopwatch = new TrackTime('My System')
 stopwatch.start('subprocess')
@@ -194,6 +194,35 @@ _Example_:
 - **total**: The seconds + milliseconds provides the total elapsed time.
 - **display**: A convenience attribute providing a displayable version of the elapsed time.
 - **timestamp**: The timestamp when the measurement was recorded.
+
+## Tracking Processes
+
+This library works well for tracking how much time elapses in each step of a multi-step processes.
+
+I build my workflows with [shortbus](https://github.com/coreybutler/shortbus), which is a task runner for Node.js (Browser version is part of [NGN 2.0.0 Queues](https://github.com/ngnjs/ngn)). Combined with tracktime, it can provide solid insights about workflows. 
+
+_Example_
+```javascript
+import TrackTime from 'node-tracktime'
+import TaskRunner from 'shortbus'
+
+const stopwatch = new TrackTime()
+const tasks = new TaskRunner()
+
+tasks.add('task 1', next => ...)
+tasks.add('task 2', next => ...)
+tasks.add('task 3', next => ...)
+
+tasks.on('stepstarted', task => stopwatch.measure(task.name, 'start'))
+tasks.on('stepcomplete', task => stopwatch.measure(task.name, 'stop'))
+tasks.on('complete', () => {
+  stopwatch.timers.forEach(timer => {
+    console.log(stopwatch.history(timer))
+  })
+})
+
+tasks.run(true)
+```
 
 ## License
 
