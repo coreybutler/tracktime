@@ -1,6 +1,6 @@
 # tracktime
 
-This cross-runtime JavaScript module that measures/tracks time for one or more processes.
+This cross-runtime JavaScript library measures/tracks time for one or more processes.
 
 Think of this library like a stopwatch that is always running. At certain points, you observe the time/take a measurement. These measurements are used to calculate how much time has elapased.
 
