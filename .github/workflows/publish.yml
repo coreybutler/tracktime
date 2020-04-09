@@ -39,13 +39,26 @@ jobs:
           draft: false
           prerelease: steps.autotagger.outputs.prerelease == 'yes'
 
+      - name: Build Release Artifacts
+        id: build
+        run: |
+          cd ./build && npm install && cd ../
+          npm run build --if-present
+          for d in .dist/*/*/ ; do tar -cvzf ${d%%/}-x.x.x.tar.gz ${d%%}*; done;
+    
+      - name: Upload Release Artifacts
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: './.dist/**/*.tar.gz'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
         # Use this action to publish a single module to npm.
       - name: Publish
         id: publish
         if: steps.autotagger.outputs.tagcreated == 'yes'
         uses: author/action-publish@stable
         with:
-          scan: ./.dist
+          scan: "./dist/browser, ./dist/node"
         env:
           REGISTRY_TOKEN: "${{ secrets.NPM_TOKEN }}"
 
