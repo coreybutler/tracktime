@@ -1,6 +1,12 @@
 # tracktime
 
-This cross-runtime JavaScript module acts like a stopwatch, allowing developers to observe the time elapsed across one or more processes.
+This cross-runtime JavaScript module that measures/tracks time for one or more processes.
+
+Think of this library like a stopwatch that is always running. At certain points, you observe the time/take a measurement. These measurements are used to calculate how much time has elapased.
+
+Using this library, developers can precisely track time for any number of processes. The unique `duration` and `history` methods provide a way to see elapsed times and a timeline history. 
+
+The library uses [hrtime](https://nodejs.org/api/process.html) for Node.js and the [Performance API (Now)](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now) in the browser. If the performance API is unavailable, it falls back to a less precise but still accurate polyfill based on [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date).
 
 
 ### Example
@@ -201,7 +207,7 @@ This library works well for tracking how much time elapses in each step of a mul
 
 I build my workflows with [shortbus](https://github.com/coreybutler/shortbus), which is a task runner for Node.js (Browser version is part of [NGN 2.0.0 Queues](https://github.com/ngnjs/ngn)). Combined with tracktime, it can provide solid insights about workflows. 
 
-_Example_
+_Example using shortbus:_
 ```javascript
 import TrackTime from 'node-tracktime'
 import TaskRunner from 'shortbus'
