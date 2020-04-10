@@ -3,6 +3,7 @@ import fs from 'fs'
 import config from './lib/config.js'
 import Build from './lib/build.js'
 import babel from 'rollup-plugin-babel'
+import { terser } from 'rollup-plugin-terser'
 
 // Install source map support
 import 'source-map-support/register.js'
@@ -30,16 +31,20 @@ if (fs.existsSync(rootdir)) {
   fs.rmdirSync(rootdir, { recursive: true })
 }
 
+let terserCfg = config.terser
+terserCfg.module = true
+
 // Identify plugins
 const plugins = [
   build.only('node'),
   babel({
     presets: [['@babel/preset-env', { targets: { node: true } }]],
     plugins: [
-      ['@babel/plugin-proposal-class-properties', { 'loose': false }],
-      ['@babel/plugin-proposal-private-methods', { 'loose': false }]
+      ['@babel/plugin-proposal-class-properties', { loose: false }],
+      ['@babel/plugin-proposal-private-methods', { loose: false }]
     ]
-  })
+  }),
+  terser(terserCfg)
 ]
 
 // 2. Build Node Production Package: Standard (Minified/Munged)
