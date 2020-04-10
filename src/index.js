@@ -113,14 +113,14 @@ export default class Stopwatch {
 
   /**
    * Return the time elapsed since the last measurement.
-   * @param {string} [name]
-   * The name of the timer. Uses the default timer if this is not specified.
    * @param {string} [label]
    * An optional label for the measurement.
+   * @param {string} [name]
+   * The name of the timer. Uses the default timer if this is not specified.
    * @return {Duration}
    * Returns a duration, or `null` if the named timer is uncrecognized.
    */
-  measure (name = null, label = null) {
+  measure (label = null, name = null) {
     let timer = this.#timers.get(name || this.#default)
 
     if (!timer) {
@@ -169,7 +169,7 @@ export default class Stopwatch {
     let ms = 0
 
     if (includeCurrentTime) {
-      this.measure(name)
+      this.measure(null, name)
     }
 
     timer.history.forEach(el => {
@@ -193,5 +193,44 @@ export default class Stopwatch {
   history (name = null) {
     let timer = this.#timers.get(name || this.#default)
     return timer === null ? [] : timer.history
+  }
+
+  /**
+   * Retrieve a specific record from the history.
+   * **Notice the order of arguments passed to this method.**
+   * @param {string} [label]
+   * The label for the measurement. (case-_insensitive_)
+   * @param {string} [name]
+   * The name of the timer. Uses the default timer if this is not specified.
+   * @return {Duration}
+   * Returns a duration, or `null` if the named timer or label is uncrecognized.
+   */
+  historyLabel (label = null, name = null) {
+    if (label === null) {
+      return null
+    }
+
+    let timer = this.#timers.get(name || this.#default)
+
+    if (!timer) {
+      return null
+    }
+
+    let result = timer.history.filter(item => item[item.length - 1].trim().toLowerCase() === label.trim().toLowerCase())
+
+    if (result.length === 0) {
+      return null
+    }
+
+    result = result[0]
+
+    return {
+      seconds: result[0],
+      milliseconds: result[1],
+      label: result[3],
+      total: (result[0] * 1000) + result[1],
+      display: ((result[0] !== 0 ? `${result[0]}s ` : ' ') + (result[1] !== 0 ? `${result[1]}ms` : '')).trim(),
+      timestamp: null
+    }
   }
 }
