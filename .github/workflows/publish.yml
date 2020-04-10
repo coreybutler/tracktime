@@ -40,7 +40,7 @@ jobs:
           prerelease: ${{ steps.autotagger.outputs.prerelease == 'yes' }}
 
       - name: Build Release Artifacts
-        if: success()
+        if: success() && steps.autotagger.outputs.tagcreated == 'yes'
         id: build
         run: |
           cd ./build && npm install && cd ../
@@ -48,7 +48,7 @@ jobs:
           for d in .dist/*/*/ ; do tar -cvzf ${d%%/}-x.x.x.tar.gz ${d%%}*; done;
     
       - name: Upload Release Artifacts
-        if: success()
+        if: success() && steps.autotagger.outputs.tagcreated == 'yes'
         uses: AButler/upload-release-assets@v2.0
         with:
           files: './.dist/**/*.tar.gz'
@@ -66,7 +66,7 @@ jobs:
 
         # If the publish fails, rollback the release
       - name: Rollback
-        if: failure()
+        if: failure() && steps.autotagger.outputs.tagcreated == 'yes'
         uses: author/action-rollback@stable
         with:
           release_id: ${{ steps.release.id }}
