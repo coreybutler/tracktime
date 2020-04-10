@@ -52,8 +52,8 @@ jobs:
           cd ./build && npm install && cd ../
           npm run build --if-present
           for d in .dist/*/*/ ; do tar -cvzf ${d%%/}-x.x.x.tar.gz ${d%%}*; done;
-          ls -l ./dist/node
-          ls -l ./dist/browser
+          ls -l ./.dist/node
+          ls -l ./.dist/browser
     
       - name: Upload Release Artifacts
         if: success() && steps.release.outputs.id != ''
