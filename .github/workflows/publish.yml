@@ -37,9 +37,10 @@ jobs:
           release_name: ${{ steps.autotagger.outputs.tagname }}
           body: ${{ steps.autotagger.outputs.tagmessage }}
           draft: false
-          prerelease: steps.autotagger.outputs.prerelease == 'yes'
+          prerelease: ${{ steps.autotagger.outputs.prerelease == 'yes' }}
 
       - name: Build Release Artifacts
+        if: success()
         id: build
         run: |
           cd ./build && npm install && cd ../
@@ -47,6 +48,7 @@ jobs:
           for d in .dist/*/*/ ; do tar -cvzf ${d%%/}-x.x.x.tar.gz ${d%%}*; done;
     
       - name: Upload Release Artifacts
+        if: success()
         uses: AButler/upload-release-assets@v2.0
         with:
           files: './.dist/**/*.tar.gz'
@@ -55,7 +57,7 @@ jobs:
         # Use this action to publish a single module to npm.
       - name: Publish
         id: publish
-        if: steps.autotagger.outputs.tagcreated == 'yes'
+        if: success() && steps.autotagger.outputs.tagcreated == 'yes'
         uses: author/action-publish@stable
         with:
           scan: "./dist/browser, ./dist/node"
