@@ -52,6 +52,8 @@ jobs:
           cd ./build && npm install && cd ../
           npm run build --if-present
           for d in .dist/*/*/ ; do tar -cvzf ${d%%/}-x.x.x.tar.gz ${d%%}*; done;
+          ls -l ./dist/node
+          ls - ./dist/browser
     
       - name: Upload Release Artifacts
         if: success() && steps.release.outputs.id != ''
@@ -59,6 +61,7 @@ jobs:
         with:
           files: './.dist/**/*.tar.gz'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ steps.autotagger.outputs.tagname }}
 
         # Use this action to publish a single module to npm.
       - name: Publish
