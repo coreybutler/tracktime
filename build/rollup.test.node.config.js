@@ -32,7 +32,6 @@ if (fs.existsSync(rootdir)) {
 }
 
 let terserCfg = config.terser
-terserCfg.module = true
 
 // Identify plugins
 const plugins = [

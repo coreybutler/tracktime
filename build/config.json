@@ -10,7 +10,10 @@
       "keep_classnames": true,
       "drop_console": true,
       "passes": 10,
-      "warnings": true
-    }
+      "warnings": true,
+      "module": true
+    },
+    "mangle": false,
+    "module": true
   }
 }
