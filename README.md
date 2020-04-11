@@ -2,7 +2,7 @@
 
 This cross-runtime JavaScript library measures/tracks time for one or more processes.
 
-Think of this library like a stopwatch that is always running. At certain points, you observe the time/take a measurement. These measurements are used to calculate how much time has elapased. It's like viewing slices of a timeline.
+Think of it like a stopwatch that is always running. At certain points, you observe the time/take a measurement. These measurements are used to calculate how much time has elapased. It's like viewing slices of a timeline.
 
 Using this library, developers can precisely track time for any number of processes. The unique `duration` and `history` methods provide a way to see elapsed times and a timeline history. 
 
