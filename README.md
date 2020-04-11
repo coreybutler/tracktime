@@ -219,8 +219,8 @@ tasks.add('task 1', next => ...)
 tasks.add('task 2', next => ...)
 tasks.add('task 3', next => ...)
 
-tasks.on('stepstarted', step => stopwatch.measure(step.name, 'start'))
-tasks.on('stepcomplete', step => stopwatch.measure(step.name, 'stop'))
+tasks.on('stepstarted', step => stopwatch.measure('start', step.name))
+tasks.on('stepcomplete', step => stopwatch.measure('total duration', step.name))
 tasks.on('complete', () => {
   stopwatch.timers.forEach(timer => {
     console.log(stopwatch.history(timer))
