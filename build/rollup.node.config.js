@@ -24,9 +24,6 @@ let configuration = [] // Rollup Configurations
 fs.rmdirSync(rootdir, { recursive: true })
 
 let terserCfg = config.terser
-terserCfg.module = true
-terserCfg.mangle = { properties: true }
-// terser.compress.ecma = 6
 
 // Identify plugins
 const plugins = [
