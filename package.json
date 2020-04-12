@@ -1,6 +1,6 @@
 {
   "name": "tracktime",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "A stopwatch to track execution times in precise detail.",
   "main": "src/index.js",
   "directories": {

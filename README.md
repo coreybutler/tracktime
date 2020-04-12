@@ -1,4 +1,4 @@
-# tracktime
+# tracktime ![Version](https://img.shields.io/github/v/tag/coreybutler/tracktime?label=Latest%20Version&style=for-the-badge)
 
 This cross-runtime JavaScript library measures/tracks time for one or more processes.
 
@@ -27,44 +27,72 @@ console.log(metric)
 let result = stopwatch.measure('subprocess', 'Task 2')
 console.log(result)
 
-console.log('Total Time:', stopwatch.duration('subprocess', false))
+const history = stopwatch.history('subprocess')
 
-console.log(stopwatch.history('subprocess))
+console.log('Total Time:', stopwatch.stop('subprocess', false))
+
+console.log(history)
 ```
 
 The code above would output the following:
 
 ```sh
 {
+  "timer": "subprocess"
   "label": "Task 1",
   "seconds": 1,
-  "milliseconds": 568.5149,
-  "total": 1568.5149000000001,
-  "display": "1s 568.5149ms",
-  "timestamp": 1586460511077
+  "milliseconds": 568,
+  "nanoseconds": 5149,
+  "elapsed": 15685149000000001,
+  "total": 15685149000000001,
+  "display": "1s 568ms 5149ns",
+  "timestamp": "2020-04-12T03:54:35.929Z"
 }
 
 {
+  "timer": "subprocess"
   "label": "Task 2",
   "seconds": 0,
-  "milliseconds": 793.4923,
-  "total": 793.4923000000001,
+  "milliseconds": 793,
+  "nanoseconds": 4923,
+  "elapsed": 7934923000000001,
+  "total": 7934923000000001,
   "display": "793.4923ms",
-  "timestamp": 1586460513077
+  "timestamp": "2020-04-12T03:54:65.729Z"
 }
 
 {
-  "label": "subprocess total",
+  "timer": "subprocess"
+  "label": "stop",
   "seconds": 2,
-  "milliseconds": 362.0072,
-  "total": 2362.0072000000002,
-  "display": "2s 362.0072ms",
-  "timestamp": 1586460514077
+  "milliseconds": 362,
+  "nanoseconds": 72,
+  "elapsed": 23620072000000002,
+  "total": 23620072000000002,
+  "display": "2s 362ms 72ns",
+  "timestamp": "2020-04-12T03:56:95.829Z"
 }
 
 [
-  [ 1, 568.5149000000001, 'Task 1' ],
-  [ 0, 793.4923000000001, 'Task 2' ]
+  {
+    "timer": "subprocess"
+    "label": "Task 1",
+    "seconds": 1,
+    "milliseconds": 568,
+    "nanoseconds": 5149,
+    "elapsed": 15685149000000001,
+    "total": 15685149000000001,
+    "timestamp": "2020-04-12T03:54:35.929Z"
+  }, {
+    "timer": "subprocess"
+    "label": "Task 2",
+    "seconds": 0,
+    "milliseconds": 793,
+    "nanoseconds": 4923,
+    "elapsed": 7934923000000001,
+    "total": 7934923000000001,
+    "timestamp": "2020-04-12T03:54:65.729Z"
+  }
 ]
 ```
 
@@ -159,11 +187,11 @@ This measures the time elapsed since the last measurement, or from the start if 
 
 The label is optional. It is included in the response and in the timer history, making it easy to annotate an execution/performance report.
 
-#### duration([name], [includeCurrentTime=true])
+<!-- #### duration([name], [includeCurrentTime=true])
 
 Returns the total amount of time elapsed since the start.
 
-The `includeCurrentTime` attribute adds all elapsed time up to the moment this method is called. If set to false, this will calculate the duration up to the last measurement only.
+The `includeCurrentTime` attribute adds all elapsed time up to the moment this method is called. If set to false, this will calculate the duration up to the last measurement only. -->
 
 #### history([name])
 
@@ -171,11 +199,22 @@ Retrieves the history of a timer. This is an array of arrays, following this for
 
 ```javascript
 [
-  [seconds, milliseconds, label],
-  [seconds, milliseconds, label],
-  [seconds, milliseconds, label]
+  {
+    "timer": string
+    "label": string
+    "elapsed": number
+    "total": number
+    "seconds": number
+    "milliseconds": number
+    "nanoseconds": number
+    "timestamp": datetime
+  }
 ]
 ```
+
+#### historyLabel(label, [name])
+
+Retrieves a specific timer's history item (by label). Returns an object or null if the item cannot be found.
 
 ### Duration Object
 
@@ -185,21 +224,35 @@ _Example_:
 
 ```javascript
 {
-  "label": "optional label",
-  "seconds": 10,
-  "milliseconds": 362.0072,
-  "total": 10362.0072000000002,
-  "display": "10s 362.0072ms",
-  "timestamp": 1586460514077
+  "timer": 'system_default',
+  "label": 'stop',
+  "seconds": 1,
+  "milliseconds": 608,
+  "nanoseconds": 465125,
+  "elapsed": 1608465125,
+  "total": 1608465125,
+  "display": "604ms 731762ns",
+  "timestamp": "2020-04-12T03:54:35.929Z",
+  "display_total": [Getter],
+  "display_ms": [Getter],
+  "display_ns": [Getter],
+  "display_seconds": [Getter]
 }
 ```
 
+- **timer**: The name of the timer. This will be `system_default` unless a custom timer is used.
 - **label**: An optional label to assign to the measurement. Useful for identify which task/process is being tracked.
 - **seconds**: The total seconds elapsed.
 - **milliseconds**: The milliseconds elapsed.
-- **total**: The seconds + milliseconds provides the total elapsed time.
+- **nanoseconds**: The milliseconds elapsed.
+- **elapsed**: The seconds + milliseconds provides the total elapsed time.
+- **total**: The total time (nanoseconds) since the timer started.
 - **display**: A convenience attribute providing a displayable version of the elapsed time.
 - **timestamp**: The timestamp when the measurement was recorded.
+- **display_total**: A convenience attribute representing the total time elapsed since the timer started.
+- **display_ms**: A convenience attribute representing the milliseconds elapsed since the last measurement.
+- **display_ns**: A convenience attribute representing the nanoseconds elapsed since the last measurement.
+- **display_seconds**: A convenience attribute representing the seconds elapsed since the last measurement.
 
 ## Tracking Processes
 

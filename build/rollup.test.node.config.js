@@ -21,9 +21,9 @@ let configuration = [] // Rollup Configurations
 let output = `${outdir}/index.js`
 
 // Pre-process: Check if the build actually needs to be updated.
-if (build.isUnnecessaryBuild(input, output)) {
-  process.exit(0)
-}
+// if (build.isUnnecessaryBuild(input, output)) {
+//   process.exit(0)
+// }
 
 // 1. Clean prior builds
 if (fs.existsSync(rootdir)) {
@@ -32,6 +32,8 @@ if (fs.existsSync(rootdir)) {
 }
 
 let terserCfg = config.terser
+terserCfg.compress = terserCfg.compress || {}
+terserCfg.compress.drop_console = false
 
 // Identify plugins
 const plugins = [
