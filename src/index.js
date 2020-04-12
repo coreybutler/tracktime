@@ -93,7 +93,7 @@ export default class Stopwatch {
    * }
    * ```
    */
-  static parse (int) {
+  parse (int) {
     const seconds = Math.floor(int / NS_PER_SECOND)
     const milliseconds = Math.floor((int - (seconds * NS_PER_SECOND)) / NS_PER_MILLISECOND)
     const nanoseconds = int - (seconds * NS_PER_SECOND) - (milliseconds * NS_PER_MILLISECOND)
