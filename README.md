@@ -4,7 +4,7 @@ This cross-runtime JavaScript library measures/tracks time for one or more proce
 
 Think of it like a stopwatch that is always running. At certain points, you observe the time/take a measurement. These measurements are used to calculate how much time has elapased. It's like viewing slices of a timeline.
 
-Using this library, developers can precisely track time for any number of processes. The unique `duration` and `history` methods provide a way to see elapsed times and a timeline history. 
+Using this library, developers can precisely track time for any number of processes. The unique `history` method provides a way to see elapsed times and a complete timeline history.
 
 The library uses [hrtime](https://nodejs.org/api/process.html) for Node.js and the [Performance API (Now)](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now) in the browser. If the performance API is unavailable, it falls back to a less precise but still accurate polyfill based on [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date).
 
