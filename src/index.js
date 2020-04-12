@@ -58,13 +58,6 @@ export default class Stopwatch {
   /* end-browser-only */
   #default = Symbol('default')
   #timers = new Map()
-  #parse = int => {
-    const seconds = Math.floor(int / NS_PER_SECOND)
-    const milliseconds = Math.floor((int - (seconds * NS_PER_SECOND)) / NS_PER_MILLISECOND)
-    const nanoseconds = int - (seconds * NS_PER_SECOND) - (milliseconds * NS_PER_MILLISECOND)
-
-    return { seconds, milliseconds, nanoseconds }
-  }
 
   constructor (name = null) {
     this.#name = name || 'Unknown TrackTime'
@@ -87,6 +80,28 @@ export default class Stopwatch {
   }
 
   /**
+   * Parse a big integer into seconds, milliseconds and nanoseconds.
+   * This is useful for parsing elapsed/total time values.
+   * @param {number} integer
+   * @return {object}
+   * Returns an object like:
+   * ```javascript
+   * {
+   *   seconds: 1,
+   *   milliseconds: 749,
+   *   nanoseconds: 23419
+   * }
+   * ```
+   */
+  parse (int) {
+    const seconds = Math.floor(int / NS_PER_SECOND)
+    const milliseconds = Math.floor((int - (seconds * NS_PER_SECOND)) / NS_PER_MILLISECOND)
+    const nanoseconds = int - (seconds * NS_PER_SECOND) - (milliseconds * NS_PER_MILLISECOND)
+
+    return { seconds, milliseconds, nanoseconds }
+  }
+
+  /**
    * Start or retstart a timer.
    * @param {string} [name]
    * The name of the timer. Uses the default timer if this is not specified.
@@ -103,7 +118,7 @@ export default class Stopwatch {
    */
   stop (name = null) {
     const result = this.measure('stop', name)
-    const total = this.#parse(result.total)
+    const total = this.parse(result.total)
     
     result.seconds = total.seconds
     result.milliseconds = total.milliseconds
@@ -212,7 +227,7 @@ export default class Stopwatch {
       display: ((hrtime[0] !== 0 ? `${hrtime[0]}s ` : ' ') + (ms !== 0 ? `${ms}ms ` : ' ') + (ns !== 0 ? `${ns}ns` : '')).trim(),
       timestamp: ts,
       get display_total () {
-        const t = this.#parse(total)
+        const t = this.parse(total)
         return ((t.seconds !== 0 ? `${t.seconds}s ` : ' ') + (t.milliseconds !== 0 ? `${t.milliseconds}ms ` : ' ') + (t.nanoseconds !== 0 ? `${t.nanoseconds}ns` : '')).trim()
       },
       get display_ms() {

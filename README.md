@@ -216,6 +216,20 @@ Retrieves the history of a timer. This is an array of arrays, following this for
 
 Retrieves a specific timer's history item (by label). Returns an object or null if the item cannot be found.
 
+#### parse(int)
+
+A method to parse a big integer into its time elements. Results look like:
+
+```javascript
+{
+  seconds: 1,
+  milliseconds: 749,
+  nanoseconds: 23419
+}
+```
+
+Parsing is usually handled automatically, but this is useful if you need to process an elapsed or total time within a timer history, compare to another timer, etc.
+
 ### Duration Object
 
 This is the object which is returned by a few different methods.
