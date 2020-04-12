@@ -1,4 +1,5 @@
 # tracktime ![Version](https://img.shields.io/github/v/tag/coreybutler/tracktime?label=Latest%20Version&style=for-the-badge)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoreybutler%2Ftracktime.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoreybutler%2Ftracktime?ref=badge_shield)
 
 This cross-runtime JavaScript library measures/tracks time for one or more processes.
 
@@ -300,6 +301,9 @@ tasks.run(true)
 ## License
 
 MIT
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoreybutler%2Ftracktime.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoreybutler%2Ftracktime?ref=badge_large)
 
 ## Credits
 
